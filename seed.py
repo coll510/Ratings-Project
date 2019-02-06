@@ -51,6 +51,7 @@ def load_movies():
 
         if release_date:
             released_at = datetime.datetime.strptime(release_date, "%d-%b-%Y")
+        
         else:
             released_at = None
 
