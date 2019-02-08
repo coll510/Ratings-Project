@@ -53,8 +53,9 @@ def register_process():
 
     if User.query.filter_by(email=email).first():
         flash ('You are already registered!')
-        return redirect("/") #temporary hold until build new route
-        # return render_template("/log_in")
+        
+        return render_template("/login")
+
     else:
         flash('You are now registered!')
         db.session.add(new_user)
@@ -62,11 +63,40 @@ def register_process():
 
         return redirect("/")
 
-#@app.route
+@app.route("/login", methods=["GET"])
+#route that shows the login form
+def login_form():
+
+    
+        
+        return render_template("login_form.html")
+
+@app.route("/login", methods=["POST"])
+#route that handles submission of login form
+def user_login():
+
+    email = request.form['email']
+    password=request.form['password']
+
+    if User.query.filter_by(email=email, password=password).first():
+
+        if User.password == password:
 
 
+        flash('Logged in')
+
+        return render_template("homepage.html")
+        
+    else:
+        return 
 
 
+@app.route("/logout", methods=["GET"])
+def logout():
+    
+    flash('Logged out')
+
+    return render_template("homepage.html")
 
 
 
