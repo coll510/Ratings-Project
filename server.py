@@ -2,8 +2,7 @@
 
 from jinja2 import StrictUndefined
 
-from flask import (Flask, render_template, redirect, request, flash, 
-                    session)
+from flask import (Flask, render_template, redirect, request, flash, session)
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import User, Rating, Movie, connect_to_db, db
@@ -35,26 +34,35 @@ def user_list():
 @app.route("/register", methods=["GET"])
 def register_form():
 
-
+    #display form
 
     return render_template("register_form.html")
 
 
-@app.route("/process", methods=["POST"])
+@app.route("/register", methods=["POST"])
 def register_process():
 
-    user = request.args.get("User.email")
+    #user = request.args.get("User.email")
+
+    email = request.form['email']
+    password=request.form['password']
+    new_user = User(email=email, password=password)
 
 
-    if user:
-        #add to database
-        pass
-        
+    # user = db.session.query(User).filter_by(email= email)
+
+    if User.query.filter_by(email=email).first():
+        flash ('You are already registered!')
+        return redirect("/") #temporary hold until build new route
+        # return render_template("/log_in")
     else:
         flash('You are now registered!')
-        db.session.add(user)
+        db.session.add(new_user)
         db.session.commit()
-    #else:
+
+        return redirect("/")
+
+#@app.route
 
 
 
